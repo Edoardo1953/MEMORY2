@@ -509,6 +509,40 @@
                     dlMp4.download = safeTitle + '.mp4';
                 }
 
+                // Configura Player Anteprima Video
+                var vidPreview = el('final-video-preview');
+                if (vidPreview) {
+                    vidPreview.src = url;
+                    vidPreview.style.display = 'block';
+                }
+
+                // Supporto Condivisione Nativa (Mobile/iOS)
+                var btnShare = el('btn-share-native');
+                if (btnShare) {
+                    if (navigator.share && navigator.canShare) {
+                        try {
+                            var fileToShare = new File([blob], safeTitle + '.mp4', { type: mimeType });
+                            if (navigator.canShare({ files: [fileToShare] })) {
+                                btnShare.style.display = 'inline-flex';
+                                btnShare.onclick = function() {
+                                    navigator.share({
+                                        title: rawTitle || 'Il mio video Memory2',
+                                        files: [fileToShare]
+                                    }).catch(function(err) {
+                                        console.log("Condivisione annullata/fallita:", err);
+                                    });
+                                };
+                            } else {
+                                btnShare.style.display = 'none';
+                            }
+                        } catch(e) {
+                            btnShare.style.display = 'none';
+                        }
+                    } else {
+                        btnShare.style.display = 'none';
+                    }
+                }
+
                 isRendering = false; 
                 updateButtons();
                 if (progressContainer) progressContainer.style.display = 'none';
