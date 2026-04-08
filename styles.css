@@ -395,7 +395,7 @@ select.glass-input {
 @media(max-width: 850px) {
     .preview-layout { flex-wrap: wrap; }
     .middle-layout { flex-direction: column; }
-    .timeline-item { width: calc(33.333% - 0.8rem); } /* switch back to 3 on mobile stacked */
+    .timeline-item { width: calc(50% - 0.6rem); } /* 2 per riga su mobile per avere foto molto pi grandi */
 }
 
 .canvas-container {
