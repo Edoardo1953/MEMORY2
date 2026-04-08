@@ -380,7 +380,14 @@
             isPlaying = true; startTime = 0;
             el('canvas-container').classList.add('playing');
             if (bp) bp.innerHTML = '<i class="fa-solid fa-stop"></i> <span>Ferma Anteprima</span>';
-            if (audio && audio.src) { audio.currentTime=0; audio.play().catch(function(){}); }
+            if (audio && audio.src) { 
+                if (audioContext && audioSourceNode) {
+                    try { audioSourceNode.disconnect(); } catch(e) {}
+                    audioSourceNode.connect(audioContext.destination);
+                }
+                audio.currentTime=0; 
+                audio.play().catch(function(){}); 
+            }
             requestAnimationFrame(function loop(ts) {
                 if (!isPlaying) return;
                 if (!startTime) startTime = ts;
