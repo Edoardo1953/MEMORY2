@@ -60,20 +60,20 @@
                     <div class="zoom-tools-wrapper">
                         <div class="zoom-tools-header">
                             <i class="fa-solid fa-magnifying-glass-plus text-brand"></i>
-                            <span class="text-sm">Trascina questi effetti sulle foto per applicare uno Zoom personalizzato</span>
+                            <span class="text-sm">Tocca un effetto e poi tocca la foto, oppure trascinalo, per applicare lo Zoom.</span>
                         </div>
                         <div class="zoom-tools-container">
                             <div class="zoom-row">
                                 <span class="zoom-label">Zoom IN</span>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 1)"><div class="zoom-bar bar-1"></div></div>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 2)"><div class="zoom-bar bar-2"></div></div>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 3)"><div class="zoom-bar bar-3"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 1)" onclick="if(window.Memory) window.Memory.handleZoomClick('in', 1, this)"><div class="zoom-bar bar-1"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 2)" onclick="if(window.Memory) window.Memory.handleZoomClick('in', 2, this)"><div class="zoom-bar bar-2"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'in', 3)" onclick="if(window.Memory) window.Memory.handleZoomClick('in', 3, this)"><div class="zoom-bar bar-3"></div></div>
                             </div>
                             <div class="zoom-row">
                                 <span class="zoom-label">Zoom OUT</span>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 1)"><div class="zoom-bar bar-1"></div></div>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 2)"><div class="zoom-bar bar-2"></div></div>
-                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 3)"><div class="zoom-bar bar-3"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 1)" onclick="if(window.Memory) window.Memory.handleZoomClick('out', 1, this)"><div class="zoom-bar bar-1"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 2)" onclick="if(window.Memory) window.Memory.handleZoomClick('out', 2, this)"><div class="zoom-bar bar-2"></div></div>
+                                <div class="zoom-btn" draggable="true" ondragstart="if(window.Memory) window.Memory.handleZoomDrag(event, 'out', 3)" onclick="if(window.Memory) window.Memory.handleZoomClick('out', 3, this)"><div class="zoom-bar bar-3"></div></div>
                             </div>
                         </div>
                     </div>

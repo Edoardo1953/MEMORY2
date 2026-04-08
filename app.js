@@ -11,6 +11,8 @@
     var imagesList = [];
     var draggedIndex = null;
     var draggedZoom = null; // Memorizza tipo e livello zoom trascinato
+    var activeZoomClickType = null;
+    var activeZoomClickLevel = null;
     var isPlaying = false;
     var isRendering = false;
     var animationId = null;
@@ -326,6 +328,35 @@
                 }
             });
 
+            // Gestione Click per applicare Zoom su Mobile/Touch
+            div.addEventListener('click', function(e) {
+                // Se si sta cliccando un bottone (rimuovi, sposta) ignoriamo l'applicazione dello zoom
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('.zoom-badge')) return;
+
+                if (activeZoomClickType) {
+                    var rect = div.getBoundingClientRect();
+                    var xPct = (e.clientX - rect.left) / rect.width;
+                    var yPct = (e.clientY - rect.top) / rect.height;
+                    
+                    imagesList[index].zoom = {
+                        type: activeZoomClickType,
+                        level: activeZoomClickLevel,
+                        x: xPct,
+                        y: yPct
+                    };
+                    
+                    showToast('Zoom applicato!', 'success');
+                    
+                    // Deseleziona strumento dopo l'uso per evitare click accidentali successivi
+                    var allBtns = document.querySelectorAll('.zoom-btn');
+                    allBtns.forEach(function(b) { b.classList.remove('selected'); });
+                    activeZoomClickType = null;
+                    activeZoomClickLevel = null;
+                    
+                    renderTimeline(); drawFrame(0);
+                }
+            });
+
             var img = document.createElement('img'); img.src = item.url;
             var badge = document.createElement('div'); badge.className='turn-badge'; badge.innerText = index+1;
             
@@ -523,10 +554,28 @@
         updateButtons();
     });
 
-    // --- Gestore Zoom Drag ---
+    // --- Gestore Zoom Drag & Click ---
     function handleZoomDrag(e, type, level) {
         e.dataTransfer.setData('text/plain', type); // Required for FireFox
         draggedZoom = { type: type, level: level };
+    }
+
+    function handleZoomClick(type, level, btnEl) {
+        var allBtns = document.querySelectorAll('.zoom-btn');
+        var isSelected = btnEl.classList.contains('selected');
+        
+        allBtns.forEach(function(b) { b.classList.remove('selected'); });
+        
+        if (isSelected) {
+            activeZoomClickType = null;
+            activeZoomClickLevel = null;
+            showToast('Zoom deselezionato.', 'success');
+        } else {
+            btnEl.classList.add('selected');
+            activeZoomClickType = type;
+            activeZoomClickLevel = level;
+            showToast('Effetto ' + type.toUpperCase() + ' (Liv.' + level + ') pronto! Tocca il centro di una foto per applicarlo.', 'success');
+        }
     }
 
     // --- Espone l'API globale ---
@@ -537,6 +586,7 @@
         togglePreview: togglePreview,
         startRender: startRender,
         handleZoomDrag: handleZoomDrag,
+        handleZoomClick: handleZoomClick,
         get draggedIndex() { return draggedIndex; },
         forceRedraw: function() { drawFrame(0); }
     };

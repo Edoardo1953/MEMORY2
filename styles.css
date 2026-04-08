@@ -289,6 +289,12 @@ select.glass-input {
 .zoom-btn:active {
     cursor: grabbing;
 }
+.zoom-btn.selected {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 10px rgba(88,166,255,0.8);
+    background: rgba(88,166,255,0.1);
+    transform: scale(1.1);
+}
 .zoom-bar {
     background-color: var(--success);
     width: 8px;
