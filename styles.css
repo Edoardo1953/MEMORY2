@@ -238,9 +238,14 @@ select.glass-input {
 .zoom-tools-wrapper {
     margin-bottom: 1rem;
     padding: 0.8rem 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(88, 166, 255, 0.2);
+    background: rgba(0, 0, 0, 0.85); /* Sfondo pi integrato quando sticky */
+    backdrop-filter: var(--glass-blur); /* Sfocatura per leggerezza */
+    border: 1px solid rgba(88, 166, 255, 0.4);
     border-radius: 12px;
+    position: sticky; /* Rimane in cima quando si scorre ! */
+    top: 10px;
+    z-index: 50;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 .zoom-tools-header {
     margin-bottom: 0.8rem;
@@ -308,16 +313,12 @@ select.glass-input {
     display: flex;
     flex-wrap: wrap; /* Rende la timeline impilata a più righe */
     gap: 1.2rem;
-    overflow-y: auto;
     align-items: flex-start;
     align-content: flex-start;
     flex: 1; /* Prende spazio extra */
-    max-height: 400px;
-    padding-right: 0.5rem;
+    padding-bottom: 1rem;
 }
-.timeline-container::-webkit-scrollbar { width: 6px; }
-.timeline-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-.timeline-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* Rimosse le regole di scroll interno per facilitare lo scroll da mobile dell'intera pagina */
 
 
 .empty-timeline {
