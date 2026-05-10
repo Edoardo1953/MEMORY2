@@ -179,10 +179,16 @@
                             onclick="if(window.Memory) window.Memory.togglePreview();">
                             <i class="fa-solid fa-eye"></i> <span>Avvia Anteprima</span>
                         </button>
-                        <button class="btn btn-primary" id="btn-render" disabled
-                            onclick="if(window.Memory) window.Memory.startRender();">
-                            <i class="fa-solid fa-download"></i> <span>Genera Filmato WebM/MP4</span>
-                        </button>
+                        <div style="display: flex; gap: 10px; width: 100%;">
+                            <button class="btn btn-primary" id="btn-render-mp4" disabled
+                                onclick="if(window.Memory) window.Memory.startRender('mp4');" style="flex: 1; background: #2d7a4d;">
+                                <i class="fa-solid fa-file-video"></i> <span>Genera MP4</span>
+                            </button>
+                            <button class="btn btn-secondary" id="btn-render-webm" disabled
+                                onclick="if(window.Memory) window.Memory.startRender('webm');" style="flex: 1; border: 1px solid #ffab40; color: #ffab40;">
+                                <i class="fa-solid fa-file-code"></i> <span>Genera WEBM</span>
+                            </button>
+                        </div>
                         <div class="progress-wrapper" id="progress-container" style="display: none;">
                             <div class="progress-bar-wrap">
                                 <div class="progress-bar" id="progress-bar"></div>
@@ -201,20 +207,23 @@
         <div class="modal-content glass-panel" style="max-height: 90vh; overflow-y: auto;">
             <i class="fa-solid fa-circle-check success-icon" style="margin-bottom: 0.5rem;"></i>
             <h2>Completato!</h2>
-            <p style="margin-bottom: 0.8rem;">Il tuo video è pronto.</p>
+            <p style="margin-bottom: 0.8rem; font-size: 0.9rem;">Il tuo video è pronto. Su computer il download parte in automatico, su mobile usa i tasti qui sotto.</p>
             
             <video id="final-video-preview" controls playsinline style="width: 100%; border-radius: 8px; margin-bottom: 1.2rem; background: #000; display: none; max-height: 40vh;"></video>
 
-            <div class="modal-actions" style="flex-direction: column; gap: 0.8rem;">
-                <button class="btn btn-primary" id="btn-share-native" style="display: none; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none;">
+            <div class="modal-actions" style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+                <button class="btn btn-primary" id="btn-share-native" style="display: none; background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; width: 100%;">
                     <i class="fa-solid fa-share-nodes"></i> Condividi (WhatsApp/Social)
                 </button>
-                <a class="btn btn-primary text-decoration-none blink-mp4" id="download-link-mp4">
-                    <i class="fa-solid fa-download"></i> Scarica File MP4
+                
+                <a class="btn btn-primary text-decoration-none" id="download-link-mp4" style="background: #2d7a4d; color: white; border: none; width: 100%; padding: 1.2rem;">
+                    <i class="fa-solid fa-file-video"></i> SCARICA VIDEO (MP4)
                 </a>
-                <a class="btn btn-secondary text-decoration-none blink-webm" id="download-link-webm" style="border: 1px solid rgba(88, 166, 255, 0.3);">
-                    <i class="fa-solid fa-file-code"></i> Formato WebM (PC/Android)
+                
+                <a class="btn btn-secondary text-decoration-none" id="download-link-webm" style="border: 2px solid #ffab40; color: #ffab40; background: transparent; width: 100%; padding: 1.2rem;">
+                    <i class="fa-solid fa-file-code"></i> SCARICA WEBM (.HTML)
                 </a>
+            </div>
                 <button class="btn btn-text" style="margin-top: 0.5rem;" 
                     onclick="document.getElementById('download-modal').classList.remove('active'); var vd=document.getElementById('final-video-preview'); if(vd){vd.pause(); vd.src='';}">
                     <i class="fa-solid fa-xmark"></i> Chiudi
@@ -223,6 +232,6 @@
         </div>
     </div>
 
-    <script src="app.js?v=1.3"></script>
+    <script src="app.js?v=1.4"></script>
 </body>
 </html>

@@ -391,9 +391,12 @@
 
     function updateButtons() {
         var ready = imagesList.length > 0;
-        var bp = el('btn-preview'), br = el('btn-render');
+        var bp = el('btn-preview');
+        var br1 = el('btn-render-mp4');
+        var br2 = el('btn-render-webm');
         if (bp) bp.disabled = !ready || isRendering;
-        if (br) br.disabled = !ready || isRendering;
+        if (br1) br1.disabled = !ready || isRendering;
+        if (br2) br2.disabled = !ready || isRendering;
     }
 
     // --- Anteprima ---
@@ -429,11 +432,13 @@
     }
 
     // --- Render ---
-    function startRender() {
+    function startRender(targetFormat) {
         if (imagesList.length === 0 || isRendering) return;
         if (isPlaying) togglePreview();
         isRendering = true; 
         updateButtons();
+        
+        targetFormat = targetFormat || 'mp4';
         
         var progressContainer = el('progress-container');
         var progressBar = el('progress-bar');
@@ -494,19 +499,29 @@
                 
                 // Sanitizza titolo per il file
                 var rawTitle = el('video-title').value.trim() || 'video_memory';
-                var safeTitle = rawTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                var safeTitle = rawTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'video';
                 
-                var dlWebm = el('download-link-webm');
+                if (chunks.length === 0) {
+                    showToast("Errore: Nessun dato video generato.", "error");
+                    isRendering = false;
+                    updateButtons();
+                    return;
+                }
+                             var dlWebm = el('download-link-webm');
                 var dlMp4 = el('download-link-mp4');
                 
+                // Definiamo i nomi file. Forziamo .mp4 per la massima compatibilità utente
+                var filenameMp4 = safeTitle + ".mp4";
+                var filenameWebm = safeTitle + ".webm";
+
                 if (dlWebm) {
                     dlWebm.href = url;
-                    dlWebm.download = safeTitle + '.webm';
+                    dlWebm.download = filenameWebm;
                 }
                 
                 if (dlMp4) {
                     dlMp4.href = url;
-                    dlMp4.download = safeTitle + '.mp4';
+                    dlMp4.download = filenameMp4;
                 }
 
                 // Configura Player Anteprima Video
@@ -514,6 +529,24 @@
                 if (vidPreview) {
                     vidPreview.src = url;
                     vidPreview.style.display = 'block';
+                    vidPreview.load();
+                }
+
+                // --- TRIGGER DOWNLOAD AUTOMATICO (solo Desktop) ---
+                var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (!isMobile && blob.size > 0) {
+                    try {
+                        var autoDl = document.createElement('a');
+                        autoDl.href = url;
+                        autoDl.download = (targetFormat === 'webm') ? filenameWebm : filenameMp4;
+                        autoDl.style.display = 'none';
+                        document.body.appendChild(autoDl);
+                        autoDl.click();
+                        setTimeout(function() { document.body.removeChild(autoDl); }, 100);
+                        showToast("Download avviato!", "success");
+                    } catch(e) { console.error("Auto-download failed:", e); }
+                } else if (isMobile) {
+                    showToast("Video pronto! Usa i tasti sotto per salvare.", "success");
                 }
 
                 // Supporto Condivisione Nativa (Mobile/iOS)
@@ -521,12 +554,13 @@
                 if (btnShare) {
                     if (navigator.share && navigator.canShare) {
                         try {
-                            var fileToShare = new File([blob], safeTitle + '.mp4', { type: mimeType });
+                            var fileToShare = new File([blob], filenameMp4, { type: isMp4 ? mimeType : 'video/mp4' });
                             if (navigator.canShare({ files: [fileToShare] })) {
                                 btnShare.style.display = 'inline-flex';
                                 btnShare.onclick = function() {
                                     navigator.share({
                                         title: rawTitle || 'Il mio video Memory2',
+                                        text: 'Guarda il mio video creato con Memory Composer!',
                                         files: [fileToShare]
                                     }).catch(function(err) {
                                         console.log("Condivisione annullata/fallita:", err);
@@ -542,7 +576,7 @@
                         btnShare.style.display = 'none';
                     }
                 }
-
+                
                 isRendering = false; 
                 updateButtons();
                 if (progressContainer) progressContainer.style.display = 'none';
