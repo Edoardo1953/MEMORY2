@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory - Video Composer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<!--
+    ARCHITETTURA MEMORY2:
+    Gli handler critici (drop, change) sono inline sull'HTML per
+    garantire il funzionamento indipendentemente dal contesto JS.
+    Le funzioni di elaborazione sono esposte come Memory.handleFiles()
+-->
+<body
+    ondragover="event.preventDefault(); event.dataTransfer.dropEffect='copy'; document.getElementById('drop-zone').classList.add('dragover');"
+    ondragleave="if(!event.relatedTarget || event.relatedTarget===document.documentElement) document.getElementById('drop-zone').classList.remove('dragover');"
+    ondrop="event.preventDefault(); document.getElementById('drop-zone').classList.remove('dragover'); if(window.Memory && window.Memory.draggedIndex===null) window.Memory.handleFiles(event.dataTransfer.files);">
+
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <i class="fa-solid fa-film gradient-text"></i>
+                <h1 class="gradient-text">Memory Composer</h1>
+            </div>
+            <p class="subtitle">Trasforma le tue immagini di viaggio in un bellissimo ricordo animato.</p>
+        </header>
+
+        <main class="main-content">
+            <!-- 1. Area Caricamento -->
+            <div class="upload-section glass-panel" id="drop-zone">
+                <i class="fa-solid fa-images upload-icon"></i>
+                <h2>Trascina le immagini qui</h2>
+                <p>oppure usa il pulsante qui sotto</p>
+                <label for="file-input" class="upload-btn">
+                    <i class="fa-solid fa-folder-open"></i> Scegli Foto
+                </label>
+                <input
+                    type="file"
+                    id="file-input"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp,image/gif,image/bmp"
+                    hidden
+                    onchange="if(window.Memory) window.Memory.handleFiles(this.files); this.value='';">
+            </div>
+
+            <!-- 2. Layout Centrale: Timeline + Opzioni -->
+            <div class="middle-layout">
+
+                <!-- Timeline -->
+                <section class="timeline-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-film"></i> La tua Timeline</h3>
+                        <span class="text-muted text-sm badge-info">Trascina le foto per riordinarle</span>
+                    </div>
+                    <div class="timeline-container" id="timeline">
+                        <div class="empty-timeline">Carica alcune foto per iniziare a comporre il tuo video.</div>
+                    </div>
+                </section>
+
+                <!-- Opzioni -->
+                <section class="settings-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-sliders"></i> Opzioni</h3>
+                    </div>
+                    <div class="settings-vertical-list">
+                        <div class="form-group">
+                            <label for="video-format">Formato Video</label>
+                            <select id="video-format" class="glass-input" onchange="if(window.Memory) window.Memory.updateCanvasAspect();">
+                                <option value="9:16">Verticale (Mobile 9x16)</option>
+                                <option value="16:9">Orizzontale (PC/TV 16x9)</option>
+                                <option value="1:1">Quadrato (Post 1x1)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="video-quality">Resa Finale</label>
+                            <select id="video-quality" class="glass-input" onchange="if(window.Memory) window.Memory.updateCanvasAspect();">
+                                <option value="1080">Alta (1080 HQ)</option>
+                                <option value="720">Standard (720 Lite)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="slide-duration">Durata Foto</label>
+                            <select id="slide-duration" class="glass-input">
+                                <option value="4">Media (4 Secondi)</option>
+                                <option value="2">Veloce (2 Secondi)</option>
+                                <option value="6">Lenta (6 Secondi)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="zoom-amount">Effetto Cinemacity (Zoom)</label>
+                            <select id="zoom-amount" class="glass-input">
+                                <option value="0.15">Sottile (0.15x)</option>
+                                <option value="0.30">Evidente (0.30x)</option>
+                                <option value="0">Disattivato</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="transition-type">Transizione</label>
+                            <select id="transition-type" class="glass-input">
+                                <option value="fade">Dissolvenza Dolce</option>
+                                <option value="none">Stacco Netto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="title-placement">Titolo Video</label>
+                            <select id="title-placement" class="glass-input">
+                                <option value="intro">Cartello Iniziale</option>
+                                <option value="overlay">Testo su Prima Foto</option>
+                                <option value="none" selected>Nessun Titolo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="video-title">Testo Titolo (Opzionale)</label>
+                            <input type="text" id="video-title" class="glass-input" placeholder="Es: Avventura nel Parco">
+                        </div>
+                        <div class="form-group">
+                            <label>Colonna Sonora</label>
+                            <div class="file-input-wrapper glass-input">
+                                <label for="music-input" style="cursor:pointer;display:flex;align-items:center;gap:0.5rem;width:100%;">
+                                    <i class="fa-solid fa-music text-brand"></i>
+                                    <span id="music-text">Carica un MP3...</span>
+                                </label>
+                                <input type="file" id="music-input" accept="audio/*" hidden
+                                    onchange="if(window.Memory) window.Memory.handleMusicChange(this);">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 3. Anteprima e Produzione -->
+            <section class="preview-section glass-panel">
+                <div class="preview-layout" id="preview-layout">
+                    <div class="canvas-container vertical-aspect" id="canvas-container">
+                        <canvas id="video-canvas"></canvas>
+                        <div class="preview-overlay" id="preview-overlay">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Premere per l'Anteprima</span>
+                        </div>
+                    </div>
+                    <div class="preview-actions">
+                        <div class="section-header" style="margin-bottom: 0.5rem; padding-bottom: 0.5rem;">
+                            <h3><i class="fa-solid fa-clapperboard"></i> Produzione</h3>
+                        </div>
+                        <button class="btn btn-secondary" id="btn-preview" disabled
+                            onclick="if(window.Memory) window.Memory.togglePreview();">
+                            <i class="fa-solid fa-eye"></i> <span>Avvia Anteprima</span>
+                        </button>
+                        <button class="btn btn-primary" id="btn-render" disabled
+                            onclick="if(window.Memory) window.Memory.startRender();">
+                            <i class="fa-solid fa-download"></i> <span>Genera Filmato WebM/MP4</span>
+                        </button>
+                        <div class="progress-wrapper" id="progress-container" style="display: none;">
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar" id="progress-bar"></div>
+                            </div>
+                            <p class="progress-text" id="progress-text">Inizio rendering...</p>
+                        </div>
+                        <audio id="audio-player" style="display:none;"></audio>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modale Successo -->
+    <div class="modal" id="download-modal">
+        <div class="modal-content glass-panel">
+            <i class="fa-solid fa-circle-check success-icon"></i>
+            <h2>Completato!</h2>
+            <p>Il video è pronto. Clicca "Salva su Disco" per scaricarlo.</p>
+            <div class="modal-actions" style="flex-direction: column; gap: 0.8rem;">
+                <a class="btn btn-primary text-decoration-none" id="download-link-mp4">
+                    <i class="fa-solid fa-file-video"></i> Scarica in MP4 (Universale)
+                </a>
+                <a class="btn btn-secondary text-decoration-none" id="download-link-webm" style="border: 1px solid rgba(88, 166, 255, 0.3);">
+                    <i class="fa-solid fa-file-code"></i> Scarica in WebM (Alta Qualità)
+                </a>
+                <button class="btn btn-text" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;" 
+                    onclick="document.getElementById('download-modal').classList.remove('active')">
+                    Chiudi senza salvare
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

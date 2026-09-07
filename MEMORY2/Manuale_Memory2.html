@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuale Utente - Memory Composer 2.0</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px; background-color: #f9f9f9; }
+        .container { background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #58a6ff; padding-bottom: 10px; font-size: 2.2em; text-align: center; }
+        h2 { color: #58a6ff; margin-top: 30px; border-left: 4px solid #58a6ff; padding-left: 15px; }
+        h3 { color: #34495e; margin-top: 20px; }
+        p { margin-bottom: 15px; }
+        ul, ol { margin-bottom: 20px; padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .badge { background: #eef6ff; color: #58a6ff; padding: 3px 10px; border-radius: 4px; font-size: 0.9em; font-weight: bold; border: 1px solid #d0e4ff; }
+        .tip { background-color: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .warning { background-color: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .footer { margin-top: 50px; text-align: center; font-size: 0.9em; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 20px; }
+        .btn-preview { display: inline-block; padding: 8px 15px; background: linear-gradient(135deg, #58a6ff 0%, #a371f7 100%); color: white; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manuale Utente: Memory Composer 2.0</h1>
+        
+        <p style="text-align: center; font-style: italic;">Trasforma le tue immagini di viaggio in un bellissimo ricordo animato.</p>
+
+        <h2>1. Introduzione</h2>
+        <p><strong>Memory Composer</strong> è un'applicazione web "Premium" progettata per creare video cinematografici partendo da una collezione di foto. Grazie agli algoritmi di compressione intelligenti e agli effetti di animazione fluida, è possibile ottenere risultati professionali in pochi secondi, direttamente dal tuo browser.</p>
+
+        <h2>2. Caricamento delle Immagini</h2>
+        <p>L'app supporta tutti i principali formati immagine (JPG, PNG, WEBP, GIF, BMP).</p>
+        <ul>
+            <li><strong>Trascinamento (Drag & Drop)</strong>: Trascina le immagini direttamente nell'area tratteggiata centrale.</li>
+            <li><strong>Selezione Manuale</strong>: Clicca su <span class="badge">Scegli Foto</span> per aprire il selettore file del tuo computer.</li>
+            <li><strong>Limite</strong>: L'app accetta un massimo di <strong>30 foto</strong> per garantire stabilità e prestazioni ottimali.</li>
+        </ul>
+
+        <h2>3. Gestione della Timeline</h2>
+        <p>Una volta caricate, le foto appariranno nella sezione <strong>"La tua Timeline"</strong>.</p>
+        <ul>
+            <li><strong>Riordinare</strong>: Clicca e tieni premuta una foto per trascinarla in una nuova posizione.</li>
+            <li><strong>Rimuovere</strong>: Passa il mouse sopra una foto e clicca sulla <span style="color:red; font-weight:bold;">X</span> in alto a destra.</li>
+            <li><strong>Movimento Rapido</strong>: Usa le frecce <span class="badge">&lt;</span> e <span class="badge">&gt;</span> per spostare le foto di una posizione alla volta.</li>
+        </ul>
+
+        <h2>4. Colonna Sonora (Musica)</h2>
+        <p>Puoi aggiungere un sottofondo musicale caricando un file audio (MP3 o WAV).</p>
+        <ol>
+            <li>Vai nella sezione <strong>"Opzioni"</strong> sotto la voce <strong>"Colonna Sonora"</strong>.</li>
+            <li>Clicca su "Carica un MP3..." e seleziona il tuo file.</li>
+            <li>L'audio verrà automaticamente tagliato o ripetuto per coprire l'intera durata del video generato.</li>
+        </ol>
+
+        <h2>5. Personalizzazione Video</h2>
+        <p>Usa il pannello laterale destro per definire lo stile del tuo video:</p>
+        <ul>
+            <li><strong>Formato</strong>: Scegli tra <strong>9:16</strong> (Verticale per Reels/TikTok/Storie), <strong>16:9</strong> (Orizzontale per TV/YouTube) o <strong>1:1</strong> (Quadrato).</li>
+            <li><strong>Durata Foto</strong>: Imposta quanti secondi ogni immagine deve rimanere a schermo (2, 4 o 6 secondi).</li>
+            <li><strong>Effetti Zoom Drag & Drop</strong>: Un nuovo pannello sopra la griglia delle foto ti permette di scegliere tra "Zoom In" e "Zoom Out", ognuno con tre livelli di intensità. Trascina l'effetto desiderato direttamente sulla foto nella timeline per applicarlo. L'effetto Cinemacity dona vita alle tue immagini con un movimento lento e progressivo.</li>
+            <li><strong>Titolo e Intro</strong>: Inserisci un testo personalizzato. Puoi scegliere di mostrarlo come un "Cartello Iniziale" o come "Overlay" sopra la prima foto del video. L'animazione del titolo iniziale è ora più rapida e puoi personalizzare il colore di sfondo del cartello di intro se non utilizzi una foto iniziale.</li>
+        </ul>
+
+        <h2>6. Anteprima e Render Finale</h2>
+        <h3>Anteprima in Tempo Reale</h3>
+        <p>Clicca sul pulsante <span class="btn-preview">Avvia Anteprima</span> per vedere come apparirà il video finale senza doverlo generare. Puoi cambiare le impostazioni (zoom, durata, titoli) mentre l'anteprima è attiva per vedere i cambiamenti istantaneamente.</p>
+
+        <h3>Generazione del Filmato</h3>
+        <p>Quando sei soddisfatto, clicca su <strong>"Genera Filmato WebM/MP4"</strong>. Apparirà una barra di progresso. <strong>Attendi la fine del caricamento senza chiudere la finestra.</strong></p>
+
+        <h2>7. Salvataggio su Disco</h2>
+        <p>Una volta completato il render, apparirà una finestra con due opzioni di download:</p>
+        <ul>
+            <li><strong>Scarica in MP4 (Universale)</strong>: Il formato consigliato per la massima compatibilità con iPhone, Android e social media.</li>
+            <li><strong>Scarica in WebM (Alta Qualità)</strong>: Formato ad altissima fedeltà per uso su PC o web professionale.</li>
+        </ul>
+
+        <div class="tip">
+            <strong>Consiglio Pro:</strong> Per un effetto cinematografico migliore, imposta lo zoom a <em>0.15x</em> e usa la <em>Dissolvenza Dolce</em> come transizione.
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Memory Composer - Progettato per i tuoi ricordi.
+        </div>
+    </div>
+</body>
+</html>
